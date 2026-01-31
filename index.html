@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!--
+  Template: INDEX v1.0
+  Author: Haruki Tominaga
+  License: https://amix-design.com/tominaga/eyan-theme/license 
+  © 2025 EYAN / トミナガハルキ
+-->
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="robots" content="index, follow">
+    
+    <title>Agency - INDEX</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        /* ▼▼▼ 配色設定：サイト全体の色を一括で変更できます ▼▼▼ */
+        :root {
+            --bg: #fff;       /* 背景色 */
+            --text: #000;     /* 文字色 */
+            --line: #000;     /* 線の色 */
+            --hover: #e0e0e0; /* マウスを乗せた時の背景色 */
+        }
+        
+        /* === ここから下はレイアウト用CSSです。デザイン崩れを防ぐため、編集は慎重に行ってください === */
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 20px;
+            font-family: 'Roboto Mono', monospace;
+            background: var(--bg); color: var(--text);
+            font-size: 13px; line-height: 1.5;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        ul { list-style: none; padding: 0; margin: 0; }
+
+        /* グリッドレイアウト */
+        .header {
+            border-bottom: 2px solid var(--line);
+            padding-bottom: 20px; margin-bottom: 40px;
+            display: flex; justify-content: space-between; align-items: flex-end;
+        }
+        .brand { font-size: 2rem; font-weight: 500; }
+        .sys-info { text-align: right; }
+
+        /* リストスタイル */
+        .index-table { width: 100%; border-top: 1px solid var(--line); }
+        
+        /* 行のラッパー（表示・非表示制御用） */
+        .row-wrapper { display: block; }
+        .row-wrapper.hidden { display: none !important; }
+
+        .row {
+            display: grid; grid-template-columns: 50px 2fr 1fr 1fr 50px;
+            border-bottom: 1px solid var(--line);
+            padding: 15px 10px;
+            cursor: pointer; transition: background 0.2s;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            background: var(--bg);
+        }
+        .row:hover { background: var(--hover); }
+        .row-head { font-weight: 500; background: #eee; cursor: default; }
+        
+        /* 展開エリアのアニメーション設定 */
+        .preview-area {
+            max-height: 0;
+            opacity: 0;
+            padding: 0 20px;
+            overflow: hidden;
+            background: #f4f4f4;
+            border-bottom: 0px solid var(--line);
+            grid-column: 1 / -1;
+            transition: max-height 0.5s ease-in-out, 
+                        opacity 0.4s ease-in-out, 
+                        padding 0.4s ease, 
+                        border-bottom 0.1s;
+        }
+
+        /* アクティブ時のスタイル */
+        .row.active + .preview-area { 
+            max-height: 600px;
+            opacity: 1;
+            padding: 20px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .active .icon-plus { transform: rotate(45deg); }
+
+        .preview-content { display: flex; gap: 20px; }
+        .p-img { width: 300px; height: 200px; object-fit: cover; background: #ddd; border: 1px solid #000; }
+        .p-desc { flex: 1; font-size: 1rem; line-height: 1.6; }
+        
+        .icon-plus { display: inline-block; transition: 0.3s; font-weight: bold; }
+
+        /* 会社概要エリア */
+        .company-section {
+            margin-top: 80px;
+            border-top: 2px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 40px 0;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+        .company-title { font-size: 1.2rem; font-weight: 500; margin-bottom: 10px; }
+        .company-details p { margin: 0 0 10px 0; }
+
+        /* フッター */
+        .footer { margin-top: 20px; padding-top: 20px; display: flex; gap: 40px;}
+
+        @media (max-width: 768px) {
+            .row { grid-template-columns: 30px 1fr 30px; }
+            .col-cat, .col-year { display: none; }
+            .preview-content { flex-direction: column; }
+            .p-img { width: 100%; height: auto; }
+            .company-section { grid-template-columns: 1fr; }
+            .footer { flex-direction: column; gap: 20px; padding-bottom: 60px; }
+            .row.active + .preview-area { max-height: 1000px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div>
+            <div class="brand" id="brand-name"></div>
+            <div>DIRECTORY_V1.0</div>
+        </div>
+        <div class="sys-info">
+            <div id="date"></div>
+            <div>LOC: TOKYO_SERVER</div>
+        </div>
+    </header>
+
+    <div class="index-table" id="table-container">
+        <div class="row row-head">
+            <div>NO.</div>
+            <div>PROJECT_NAME</div>
+            <div class="col-cat">CATEGORY</div>
+            <div class="col-year">YEAR</div>
+            <div>Op</div>
+        </div>
+    </div>
+
+    <section class="company-section">
+        <div>
+            <div class="company-title">COMPANY / PROFILE</div>
+        </div>
+        <div class="company-details">
+            <p><strong>INDEX Inc.</strong></p>
+            <p>私たちは、視覚表現と機能性の境界を探求するデザインスタジオです。<br>東京を拠点に、グラフィック、プロダクト、建築の領域を横断して活動しています。</p>
+            <br>
+            <p>ADDRESS: 0-1-2 AOYAMA, MINATO-KU, TOKYO</p>
+            <p>ESTABLISHED: 2020</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div>CONTACT: <a href="mailto:hello@example.com" style="text-decoration:underline;">hello@example.com</a></div>
+        <div><a href="#">INSTAGRAM</a></div>
+        <div><a href="#">X(TWITTER)</a></div>
+    </footer>
+
+    <script>
+        // ▼▼▼ 設定エリア：ここを編集して自分のポートフォリオを作ってください ▼▼▼
+        const config = {
+            name: "INDEX_ARCHIVE", // サイトの左上に表示されるブランド名
+            maxImages: 18,         // 読み込む画像の最大数（image/image1.jpg 〜 image18.jpg）
+            
+            // プロジェクトごとの詳細情報
+            // 画像ファイル名とID番号を一致させてください（例：image1.jpg なら 1）
+            projectsData: {
+                1: { name: "Helvetic Mode", cat: "Type Design", year: "2024", desc: "スイスタイポグラフィの原則に基づいた、新しいフォントファミリーの開発と展開。" },
+                2: { name: "Object 77", cat: "Product", year: "2023", desc: "機能性を極限まで削ぎ落とした、アルミ削り出しのデスクオーガナイザー。" },
+                3: { name: "Blue Note", cat: "Identity", year: "2023", desc: "ジャズクラブのリブランディング。音の波形を視覚化したロゴシステム。" },
+                4: { name: "Structure A", cat: "Architecture", year: "2022", desc: "コンクリートとガラスのみで構成された、都市型住宅のプロトタイプ。" },
+                5: { name: "Void", cat: "Exhibition", year: "2022", desc: "「無」をテーマにした没入型インスタレーションアート。" }
+                // 必要な分だけ数字を増やして追記してください
+                // 記述がない番号は、自動的に仮のテキストが表示されます
+            }
+        };
+
+        // === ここから下は動作プログラムです。変更する必要はありません ===
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('brand-name').textContent = config.name;
+            document.getElementById('date').textContent = new Date().toISOString().split('T')[0];
+
+            const table = document.getElementById('table-container');
+
+            for (let i = 1; i <= config.maxImages; i++) {
+                // データ取得（なければ仮データ）
+                const data = config.projectsData[i] || {
+                    name: `Project Name ${i.toString().padStart(2, '0')}`,
+                    cat: "Graphic / Web",
+                    year: "2024",
+                    desc: "Description text for this project area. Edit the config to change this details."
+                };
+
+                // 画像パスの設定（imageフォルダの中の image1.jpg, image2.jpg... を読み込みます）
+                const imgPath = `image/image${i}.jpg`;
+                const idStr = i.toString().padStart(3, '0');
+                const wrapperId = `row-wrapper-${i}`;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'row-wrapper';
+                wrapper.id = wrapperId;
+                wrapper.style.display = 'none'; // 初期状態は非表示
+
+                const row = document.createElement('div');
+                row.className = 'row';
+                row.innerHTML = `
+                    <div>${idStr}</div>
+                    <div style="font-weight:bold;">${data.name}</div>
+                    <div class="col-cat">${data.cat}</div>
+                    <div class="col-year">${data.year}</div>
+                    <div><span class="icon-plus">+</span></div>
+                `;
+
+                const detail = document.createElement('div');
+                detail.className = 'preview-area';
+                
+                // 画像読み込み成功時のみ行を表示する仕組み
+                detail.innerHTML = `
+                    <div class="preview-content">
+                        <img src="${imgPath}" class="p-img" 
+                             onload="document.getElementById('${wrapperId}').style.display = 'block';">
+                        <div class="p-desc">
+                            <strong>${data.name} / ${data.cat}</strong><br><br>
+                            ${data.desc}
+                        </div>
+                    </div>
+                `;
+
+                row.addEventListener('click', () => {
+                    row.classList.toggle('active');
+                });
+
+                wrapper.appendChild(row);
+                wrapper.appendChild(detail);
+                table.appendChild(wrapper);
+            }
+        });
+    </script>
+</body>
+</html>
