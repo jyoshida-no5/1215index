@@ -19,5 +19,4 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        # XREAの公開ディレクトリに合わせて調整が必要な場合があります
-        # server-dir: ./public_html/
+        server-dir: ./public_html/koganehara.shop/
